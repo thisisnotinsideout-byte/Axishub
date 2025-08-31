@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up</title>
+
+  <!-- Supabase setup -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://yqjojowqgxiocofgxtlx.supabase.co",   // 👈 replace with your Supabase URL
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlxam9qb3dxZ3hpb2NvZmd4dGx4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2MDcxNTMsImV4cCI6MjA3MjE4MzE1M30.ggP8b35f0qPJOylL1aMRAlfkTG49X_lUA9BUCoUse-w"                       // 👈 replace with your anon key
+    );
+
+    async function signup() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+
+      if (error) {
+        alert(error.message);
+      } else {
+        alert("Account created! Check your email to confirm.");
+        window.location.href = "login.html"; // send them to login
+      }
+    }
+  </script>
+</head>
+<body>
+  <h1>Sign Up</h1>
+
+  <input id="email" type="email" placeholder="Email" />
+  <input id="password" type="password" placeholder="Password (min 8 chars)" />
+  <button onclick="signup()">Create Account</button>
+
+  <p><a href="login.html">Already have an account? Log in</a></p>
+</body>
+</html>
 
