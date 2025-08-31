@@ -1,19 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login</title>
+  <title>Hub</title>
 
-  <!-- 👇 Supabase library + your project keys -->
+  <!-- Supabase setup -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabase = window.supabase.createClient(
-      "https://yqjojowqgxiocofgxtlx.supabase.co",  // replace with your URL
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlxam9qb3dxZ3hpb2NvZmd4dGx4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2MDcxNTMsImV4cCI6MjA3MjE4MzE1M30.ggP8b35f0qPJOylL1aMRAlfkTG49X_lUA9BUCoUse-w
-"                      // replace with your anon key
+      "https://yqjojowqgxiocofgxtlx.supabase.co",   // 👈 replace with your Supabase URL
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlxam9qb3dxZ3hpb2NvZmd4dGx4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2MDcxNTMsImV4cCI6MjA3MjE4MzE1M30.ggP8b35f0qPJOylL1aMRAlfkTG49X_lUA9BUCoUse-w"                       // 👈 replace with your anon key
     );
+
+    // check if user is logged in
+    async function checkSession() {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        // if not logged in → send them back
+        window.location.href = "login.html";
+      } else {
+        document.getElementById("welcome").innerText =
+          "Welcome " + data.session.user.email;
+      }
+    }
+
+    // logout function
+    async function logout() {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    }
+
+    window.onload = checkSession;
   </script>
 </head>
 <body>
-  <!-- rest of the login page goes here -->
+  <h1 id="welcome">Hub</h1>
+  <p>This is your protected AxisHub page.</p>
+  <button onclick="logout()">Log out</button>
 </body>
 </html>
