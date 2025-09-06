@@ -1,41 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8" />
   <title>Login</title>
 
-  <!-- Supabase setup -->
+  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const supabase = window.supabase.createClient(
-      "https://yqjojowqgxiocofgxtlx.supabase.co",  
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlxam9qb3dxZ3hpb2NvZmd4dGx4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2MDcxNTMsImV4cCI6MjA3MjE4MzE1M30.ggP8b35f0qPJOylL1aMRAlfkTG49X_lUA9BUCoUse-w"                       // 👈 replace with your anon key
+      "https://yqjojowqgxiocofgxtlx.supabase.co",
+      "
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inlxam9qb3dxZ3hpb2NvZmd4dGx4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY2MDcxNTMsImV4cCI6MjA3MjE4MzE1M30.ggP8b35f0qPJOylL1aMRAlfkTG49X_lUA9BUCoUse-w"
     );
 
     async function login() {
-      const email = document.getElementById("email").value;
+      const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
+      const out = document.getElementById("out");
+      out.textContent = "Logging in...";
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-
-      if (error) {
-        alert(error.message);
-      } else {
-        alert("Logged in as " + data.user.email);
-        window.location.href = "hub.html";  // send user to hub
-      }
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) out.textContent = "Login error: " + error.message;
+      else location.href = "hub.html";
     }
   </script>
 </head>
 <body>
   <h1>Login</h1>
-
   <input id="email" type="email" placeholder="Email" />
   <input id="password" type="password" placeholder="Password" />
   <button onclick="login()">Login</button>
-
-  <p><a href="signup.html">Need an account? Sign up here</a></p>
+  <p><a href="signup.html">Need an account? Sign up</a></p>
+  <pre id="out" style="color:#888"></pre>
 </body>
 </html>
